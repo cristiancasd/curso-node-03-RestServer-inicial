@@ -22,7 +22,7 @@ const UsuarioSchema = Schema({
     rol:{
         type:String,
         required:true,
-        enum:['ADMIN_ROLE','USER_ROLE']
+        enum:['ADMIN_ROLE','USER_ROLE',"VENTAS_ROL"]
     },
     estado:{ //Cuando cree un usuario va a estar activado
         type:Boolean, 
@@ -35,6 +35,13 @@ const UsuarioSchema = Schema({
     
 });
 
+//Ocultar la clave y la versión de la respuesta del backend
+//retornamos es información si se necesita
+UsuarioSchema.methods.toJSON = function() {
+    const {__v, password, ...usuario}=this.toObject();
+    return usuario;
+}
+
 //MOnggole por defecto coloca por defecto a la colección
 //una S ... es decir será Usuarios
-module.exports=model('Usuario',UsuarioSchema)
+module.exports=model('Usuario',UsuarioSchema);

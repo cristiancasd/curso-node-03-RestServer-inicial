@@ -1,4 +1,5 @@
 const bcryptjs=require('bcryptjs');
+const { query } = require('express');
 const { validationResult } = require('express-validator');
 const Usuario=require('../models/usuario');
 
@@ -6,30 +7,46 @@ const Usuario=require('../models/usuario');
 //const Usuario = require('../models/usuario');
 
 
-const usuariosGet = (req, res) =>{
+const usuariosGet = async (req, res) =>{
+    //recibo los parametros en el enlace
+    const{limite=5, desde=0}=req.query;
     
-    //http://localhost:8080/api/usuarios/?q=hola&nom=carlos&ap=fernad
-    const query=req.query;
+    /*
+    const usuarios = await Usuario.find({estado:true}) //La condición retorna solo los que esten en true
+        .skip(Number(desde))   //Metodo ya incluido
+        .limit(Number(limite)) //Metodo ya incluido
+    const total= await Usuario.countDocuments({estado:true});
+    */
 
-    //Si lo destructuro
-    const {q,nom,ap,id='no id',ciudad='no ciudad'}=req.query;
-
+    //Es más optimo ya que se hacen los procesos paralelos
+    const [total,usuarios] = await Promise.all([
+        Usuario.countDocuments({estado:true}),
+        Usuario.find({estado:true}) //La condición retorna solo los que esten en true
+            .skip(Number(desde))   //Metodo ya incluido
+            .limit(Number(limite)) //Metodo ya incluido
+    ]);
+    //La respuesta es una colección de dos respustas
     res.json({
-        msg:'get API - controlador',
-        q,nom,ap,id,ciudad
+        total,
+        usuarios
     });
-
-    
 };
 
-const usuariosPut =  (req, res) =>{
-    //http://localhost:8080/api/usuarios/12
-    //id va a ser 12
-    const {id}=req.params;
+const usuariosPut =  async (req, res) =>{
+                                                              
+    const {id}=req.params;                                  //http://localhost:8080/api/usuarios/12  //id va a ser 12 
+        
+    const {_id,password, google,correo, ...resto}=req.body; //no podemos recibir _id nuevo ya que este no se puede actualizar, resto no contiene los datos ahí establecidos                                                           
+    
+    if (password){                                          //Encriptar contraseña       
+        const salt = bcryptjs.genSaltSync();
+        resto.password=bcryptjs.hashSync(password,salt)     //resto ahora incluye el password encriptado
+    }    
+    
+    const usuario=await Usuario.findByIdAndUpdate(id,resto) //Actualiza los datos del id establecido
 
-    res.json({
-        msg:'put API',
-        id
+    res.json({    
+        usuario
     });
 }
 
@@ -52,6 +69,7 @@ const usuariosPost = async (req, res) =>{
     const usuario=new Usuario({nombre,correo,password, rol});
     
 
+    /*
     //Comprobar si el correo existe
     const existeEmail=await Usuario.findOne({correo});
     if(existeEmail){
@@ -59,8 +77,7 @@ const usuariosPost = async (req, res) =>{
             msg:'El correo ya está registrado'
         })
     }
-
-
+    */
     //Encriptar contraseña
     const salt = bcryptjs.genSaltSync();
     usuario.password=bcryptjs.hashSync(password, salt)
@@ -80,9 +97,17 @@ const usuariosPost = async (req, res) =>{
     });*/
 } 
 
-const usuariosDelete =  (req, res) =>{
+const usuariosDelete = async (req, res) =>{
+
+    const {id} = req.params;
+    //No se recomienda porque se borra de manera permanente
+    //const usuiario = await Usuario.findByIdAndDelete(id)
+
+    //Cambio estado a false, por ende en el get no se retorna
+    const usuario=await Usuario.findByIdAndUpdate(id,{estado:false})
+
     res.json({
-        msg:'delete API'
+        id:id
     });
 }
 
