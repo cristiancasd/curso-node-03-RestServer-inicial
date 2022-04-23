@@ -2,6 +2,7 @@ const bcryptjs=require('bcryptjs');
 const { query } = require('express');
 const { validationResult } = require('express-validator');
 const Usuario=require('../models/usuario');
+require('colors')
 
 
 //const Usuario = require('../models/usuario');
@@ -98,17 +99,18 @@ const usuariosPost = async (req, res) =>{
 } 
 
 const usuariosDelete = async (req, res) =>{
-
+    console.log('-------------------------------Entro a usuario delete'.green)
     const {id} = req.params;
+    const uid=req.uid;
+    const usuarioAutenticado=req.usuario;
     //No se recomienda porque se borra de manera permanente
     //const usuiario = await Usuario.findByIdAndDelete(id)
 
     //Cambio estado a false, por ende en el get no se retorna
     const usuario=await Usuario.findByIdAndUpdate(id,{estado:false})
+    console.log('--------------------------------------Ya borré el usuario'.green)
 
-    res.json({
-        id:id
-    });
+    res.json({usuario,usuarioAutenticado});
 }
 
 module.exports={

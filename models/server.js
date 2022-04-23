@@ -3,44 +3,37 @@ const cors = require('cors');
 const dbConnection = require('../database/config');
 
 class Server{
-    constructor(){ //En el constructor van las propiedades
-        this.app = express();
-        this.port = process.env.PORT;
-        this.usuariosPath='/api/usuarios';
-        
-        //conectar a base de datos
-        this.conectarDB();
-        
-        //Funciión que siempre va a ejecuarse cuando levantemos nuestro servidor
-        this.middlewares();  
-        this.routes();   
+
+    // Clase principal
+
+    constructor(){                              //En el constructor van las propiedades
+        this.app = express();                   //servir contenido estatico
+        this.port = process.env.PORT;           //definir puerto de conexión
+        this.authPath='/api/auth';              //path para autenticación
+        this.usuariosPath='/api/usuarios';      //path para interacción base de datos usuarios
+        this.conectarDB();                      //conectar a base de datos     
+        this.middlewares();                     //Funciión que siempre va a ejecuarse cuando levantemos nuestro servidor
+        this.routes();                           
     }
 
     async conectarDB(){
-        await dbConnection();
+        await dbConnection();   //conectar con la base de datos
     }
 
-    middlewares(){
+    middlewares(){      //(.use es la palabra para saber que es un middleware)
 
-        this.app.use(cors());
-
-
-        
-        //Lectura y parseo del body
-        this.app.use(express.json());
-        //cualquier información en POST, PUT, DELATE, ls vs s intentar 
-        //serializar en un .json
-
-
-        //Directorio publico 
-        //(use es la palabra para saber que es un middleware)
-        this.app.use(express.static('public'))
+        this.app.use(cors());          //API solo ciertas páginas web pueden acceder a ellas, proteges tu servidor       
+        this.app.use(express.json());  //Lectura y parseo del body (cualquier información en POST, PUT, DELATE, ls vs s intentar)        
+        this.app.use(express.static('public'))  //Directorio publico  (busca el index)
     }
-    routes(){//Defino las rutas de mi aplicación
-        this.app.use(this.usuariosPath,require('../routes/user'));
+
+    routes(){       //Defino las rutas de mi aplicación
+        this.app.use(this.authPath,require('../routes/auth'));      // En el path ... ejecuto ...
+        this.app.use(this.usuariosPath,require('../routes/user'));  // En el path ... ejecuto ...
     }
-    listen(){
-        this.app.listen(this.port, ()=>{
+
+    listen(){       //No está en el constructor
+        this.app.listen(this.port, ()=>{                            // Metodo express ... escuchar en el puerto
             console.log('servidor corriendo en port',this.port)
         });
     }
