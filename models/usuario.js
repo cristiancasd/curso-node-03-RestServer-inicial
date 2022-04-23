@@ -38,8 +38,8 @@ const UsuarioSchema = Schema({
 //Ocultar la clave y la versión de la respuesta del backend
 //retornamos es información si se necesita
 UsuarioSchema.methods.toJSON = function() {
-    const {__v, password,_id, ...usuario}=this.toObject();
-    usuario.uid=_id; //renombro _id a uid
+    const {__v, password,_id, ...usuario}=this.toObject();      //Retiramos el id , password, _v de la variable usuario
+    usuario.uid=_id;                                            //renombro _id a uid
     return usuario;
 }
 

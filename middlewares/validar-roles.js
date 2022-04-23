@@ -14,9 +14,9 @@ const esAdminRole = (req,res,next)=>{
     next();
 }
 
-//...roles, crea un arreglo con nombre role de todas las entradas
-const tieneRole = (...roles)=>{
-    return(req,res,next)=>{
+
+const tieneRole = (...roles)=>{                             //...roles, crea un arreglo con nombre role de todas las entradas
+    return(req,res,next)=>{                                 
         if (!req.usuario){
             return res.status(500).json({
                 msg: 'Se quiere verificar el rol sin el token'

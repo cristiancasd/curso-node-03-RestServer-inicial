@@ -1,4 +1,4 @@
-const jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");    //Paquete generar JWT
 
 const generarJWT = (uid='') => {
     return new Promise((resolve, reject)=>{

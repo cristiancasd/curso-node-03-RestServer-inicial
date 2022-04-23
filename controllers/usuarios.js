@@ -4,13 +4,11 @@ const { validationResult } = require('express-validator');
 const Usuario=require('../models/usuario');
 require('colors')
 
-
 //const Usuario = require('../models/usuario');
 
-
 const usuariosGet = async (req, res) =>{
-    //recibo los parametros en el enlace
-    const{limite=5, desde=0}=req.query;
+    
+    const{limite=5, desde=0}=req.query;                   //recibo los parametros en el enlace
     
     /*
     const usuarios = await Usuario.find({estado:true}) //La condición retorna solo los que esten en true
@@ -22,12 +20,12 @@ const usuariosGet = async (req, res) =>{
     //Es más optimo ya que se hacen los procesos paralelos
     const [total,usuarios] = await Promise.all([
         Usuario.countDocuments({estado:true}),
-        Usuario.find({estado:true}) //La condición retorna solo los que esten en true
-            .skip(Number(desde))   //Metodo ya incluido
-            .limit(Number(limite)) //Metodo ya incluido
+        Usuario.find({estado:true})                         //La condición retorna solo los que esten en true
+            .skip(Number(desde))                             //Metodo ya incluido
+            .limit(Number(limite))                           //Metodo ya incluido
     ]);
-    //La respuesta es una colección de dos respustas
-    res.json({
+    
+    res.json({                                                //La respuesta es una colección de dos respustas
         total,
         usuarios
     });
@@ -99,7 +97,7 @@ const usuariosPost = async (req, res) =>{
 } 
 
 const usuariosDelete = async (req, res) =>{
-    console.log('-------------------------------Entro a usuario delete'.green)
+
     const {id} = req.params;
     const uid=req.uid;
     const usuarioAutenticado=req.usuario;
@@ -107,9 +105,8 @@ const usuariosDelete = async (req, res) =>{
     //const usuiario = await Usuario.findByIdAndDelete(id)
 
     //Cambio estado a false, por ende en el get no se retorna
-    const usuario=await Usuario.findByIdAndUpdate(id,{estado:false})
-    console.log('--------------------------------------Ya borré el usuario'.green)
-
+    console.log('voy a borrar id'.red, id)
+    const usuario=await Usuario.findByIdAndUpdate(id,{estado:false}) 
     res.json({usuario,usuarioAutenticado});
 }
 
@@ -118,5 +115,4 @@ module.exports={
     usuariosPut,
     usuariosPost,
     usuariosDelete
-
 }

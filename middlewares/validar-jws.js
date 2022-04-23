@@ -32,7 +32,7 @@ const validarJWT= async (req,res,next)=>{
         }
         
         req.usuario=usuario;
-        req.uid=uid; //agrego al request el uidd
+        req.uid=uid; //agrego al request el uid
         next()
     }catch(error){
         console.log('estoy en el error'.green)
