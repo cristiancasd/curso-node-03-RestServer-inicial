@@ -8,9 +8,7 @@
     "npm": "8.x"
   },
   "scripts": {
-    "start": "node app.js",
-    "build": "ng build",
-    "postinstall": "ng build"
+    "start": "node app.js"
   },
   "keywords": [],
   "author": "",
