@@ -25,6 +25,7 @@ class Server{
         this.app.use(cors());          //API solo ciertas páginas web pueden acceder a ellas, proteges tu servidor       
         this.app.use(express.json());  //Lectura y parseo del body (cualquier información en POST, PUT, DELATE, ls vs s intentar)        
         this.app.use(express.static('public'))  //Directorio publico  (busca el index)
+        this.app.use(express.static(__dirname + "/public"));
     }
 
     routes(){       //Defino las rutas de mi aplicación
