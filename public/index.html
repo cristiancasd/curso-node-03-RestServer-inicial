@@ -7,6 +7,66 @@
     <title>Acceso Denegado index</title>
 </head>
 <body>
-    <h1> Acceso denegado </h1>
+    <h1> Google Sign In </h1>
+    <hr>   
+    
+    <div id="g_id_onload"        
+       data-client_id="117929405883-ttr09q9suvdlhln8jaufo8lhdjrur12r.apps.googleusercontent.com"
+       data-auto_prompt="false"
+       data-callback="handleCredentialResponse"> 
+    </div>
+    <div class="g_id_signin"
+       data-type="standard"
+       data-size="large"
+       data-theme="outline"
+       data-text="sign_in_with"
+       data-shape="rectangular"
+       data-logo_alignment="left">
+    </div>
+
+    <button id="google_signout">
+        SignOut
+    </button>
+
+    <script>
+        
+        function handleCredentialResponse(response) {                   // Sign In
+            console.log(response.credential);            
+            const body={id_token: response.credential};     //obtengo el google Token
+
+            //petición fetch ... es una promesa pero no regresa el body
+            //sino un readableString, hay que serializarolo
+            fetch('http://localhost:8080/api/auth/google',{    //hago la petición POST 
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify(body)                  //escribo el id_token en el body
+            })
+                .then(resp=>resp.json())
+                .then(resp=>{
+                    localStorage.setItem('email',resp.usuario.correo)  //guardo el correo para poder hacer el logOut
+                    console.log(resp)
+                })
+            .catch(console.warn)
+        }
+
+
+        const button=document.getElementById('google_signout')
+        button.onclick=()=>{                                            //Sign Out
+
+            console.log(google.accounts.id);
+            google.accounts.id.disableAutoSelect() //Se recomienda tenerlo desactivado
+        
+            google.accounts.id.revoke(localStorage.getItem('email'),donde=>{  //funcion para hacer logout
+                localStorage.clear();                                         //Botto el correo
+                location.reload();
+            });        
+        }
+      </script>
+
+        <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+
 </body>
 </html>
