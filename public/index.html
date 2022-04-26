@@ -42,8 +42,8 @@
                                                      // Sign In
             console.log(response.credential);            
             const body={id_token: response.credential};     //obtengo el google Token
-            console.log('el id es ....... ');
-            console.log(id_token);
+            console.log('el body es ....... ');
+            console.log(body);
 
             //petición fetch ... es una promesa pero no regresa el body
             //sino un readableString, hay que serializarolo
@@ -63,9 +63,10 @@
                 .then(resp=>resp.json())
                 .then(resp=>{
                     localStorage.setItem('email',resp.usuario.correo);  //guardo el correo para poder hacer el logOut
-                    console.log(resp)
+                    console.log('respuesta de google.....')
+                    console.log(resp);
                 })
-            .catch(console.warn);
+                .catch(console.warn);
 
             
         }
