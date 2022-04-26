@@ -88,7 +88,9 @@ const googleSignIn=async(req, res=response)=>{        //Req cuenta con el token
 
     }catch(err){
 
-        console.log('error es '.green, err)
+        console.log('error es ============================================================');
+        console.log('err');
+        console.log('error fue ============================================================');
         res.status(400).json({
             ok:false,
             msg:'El google token no se pudo verificar'
