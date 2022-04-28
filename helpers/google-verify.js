@@ -1,13 +1,27 @@
 const {OAuth2Client} = require('google-auth-library');
+console.log('estoy en google verifity ... voy a crear un nuevo client')
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
 require('colors')
 
-async function googleVerify(token='') {             //Recibo el token dado por google
+//async function googleVerify(token='') {             //Recibo el token dado por google
+const googleVerify=async(token='') =>{ 
+    console.log("estoy en googleVerifity función asincrona");
+
+    console.log("idToken ......",token);
+    console.log("audience: ++++++++++++ ",process.env.GOOGLE_CLIENT_ID);
+
     const ticket = await client.verifyIdToken({
         idToken: token,
         audience: process.env.GOOGLE_CLIENT_ID
     });
+
+    console.log('ticket ***********',ticket);
+    
     const payload = ticket.getPayload();
+
+    console.log('payload ***********',payload);
+
     console.log('--------------------------------------++++++---------------'.red, payload);
     const {name,picture,email}=ticket.getPayload(); //Payload tiene la información del usuario google
     return{                                         //Retorno información de usuario
