@@ -5,18 +5,18 @@ const { check } = require('express-validator');
 const { usuariosGet, usuariosDelete, usuariosPost, usuariosPut } = require("../controllers/usuarios");
 const { esRoleValido, emailExiste, existeUsuarioId } = require('../helpers/db-validators');
 
-/*
+
 const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT } = require('../middlewares/validar-jws');
 const { esAdminRole, tieneRole } = require('../middlewares/validar-roles');
-*/
+/*
 const {
     validarCampos,
     validarJWT,
     esAdminRole,
     tieneRole
 }= require('../middlewares/index');
-
+*/
 
 const Role = require('../models/role');
 

@@ -61,11 +61,9 @@
             //fetch_'https://restserver-criss.herokuapp.com/api/auth/google',  
 
 
-            let enlace='https://restserver-criss.herokuapp.com/api/auth/google'      
-            fetch (enlace ,
-
-            
-
+            let enlace='https://restserver-criss.herokuapp.com/api/auth/google'  
+            console.log('el enlace es ...',enlace)  ;  
+            fetch (enlace ,           
                 {    //hago la petición POST 
                 method:'POST',
                 headers:{
@@ -81,9 +79,7 @@
                     console.log('respuesta de google.....')
                     console.log(resp);
                 })
-                .catch(console.warn);
-
-            
+                .catch(console.warn);           
         }
 
 

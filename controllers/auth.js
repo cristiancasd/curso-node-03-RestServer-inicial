@@ -50,13 +50,21 @@ const googleSignIn=async(req, res=response)=>{        //Req cuenta con el token
     
     try{
         
+        console.log('estoy en el try de googleSignIn voy a verificar');
         const googleUser=await googleVerify(id_token) //Verifico el token y recibo el usuario google
+        console.log('googleUser:');
+        console.log(googleUser);
+
+        console.log('destructuracion ');
         const {correo, nombre, img} = await googleVerify(id_token) //Verifico el token y recibo el usuario google
-        
+        console.log(correo,nombre,img);
+
         //const googleUser={correo, nombre, img}
         let usuario=await Usuario.findOne({correo});
+        console.log('Usuario encontrado    ', usuario);
 
         if(!usuario){
+            console.log('Voy a crear usuario');
             const data={
                 nombre,
                 correo,
@@ -67,19 +75,22 @@ const googleSignIn=async(req, res=response)=>{        //Req cuenta con el token
             };
             usuario=new Usuario(data);
             console.log('voy a guardar en mi DB al usuario ...'.red, usuario)
-            await usuario.save()
+            await usuario.save();
 
         }
 
         if(!usuario.estado){
+            console.log('El usuario tiene estado false');
             return res.status(401).json({
                 msg:'Hable con el administrador, usuario bloqueado'
             });
         }
 
+        console.log('voy a generar token al usuario');
         const token=await generarJWT(usuario.id);
+        console.log(token);
 
-        console.log('usuario google es: '.red, googleUser);       
+        //console.log('usuario google es: '.red, googleUser);       
         
         res.json({
             usuario,
@@ -89,7 +100,7 @@ const googleSignIn=async(req, res=response)=>{        //Req cuenta con el token
     }catch(err){
 
         console.log('error es ============================================================');
-        console.log('err');
+        console.log(err);
         console.log('error fue ============================================================');
         res.status(400).json({
             ok:false,
