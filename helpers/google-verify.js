@@ -13,7 +13,8 @@ const googleVerify=async(token='') =>{
 
     const ticket = await client.verifyIdToken({
         idToken: token,
-        audience: process.env.GOOGLE_CLIENT_ID
+        requiredAudience:process.env.GOOGLE_CLIENT_ID
+        //audience: process.env.GOOGLE_CLIENT_ID
     });
 
     console.log('ticket ***********',ticket);
