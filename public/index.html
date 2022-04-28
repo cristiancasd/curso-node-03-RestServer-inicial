@@ -61,8 +61,8 @@
             //fetch_'https://restserver-criss.herokuapp.com/api/auth/google',  
 
 
-            //let enlace='https://restserver-criss.herokuapp.com/api/auth/google'      
-            fetch ('https://restserver-criss.herokuapp.com/api/auth/google' ,
+            let enlace='https://restserver-criss.herokuapp.com/api/auth/google'      
+            fetch (enlace ,
 
             
 
@@ -93,7 +93,7 @@
             console.log(google.accounts.id);
             google.accounts.id.disableAutoSelect() //Se recomienda tenerlo desactivado
         
-            google.accounts.id.revoke(localStorage.getItem('email'),donde=>{  //funcion para hacer logout
+            google.accounts.id.revoke(localStorage.getItem('email'),done=>{  //funcion para hacer logout
                 localStorage.clear();                                         //Botto el correo
                 location.reload();
             });        
