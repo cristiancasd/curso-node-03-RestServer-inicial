@@ -12,9 +12,12 @@ const validarJWT= async (req,res,next)=>{
              msg:'No hay token en la petición'
          });
     }
-    try{      
+    try{ 
+        console.log('Estoy en el try validar-jwt.js');     
         //en el payload del token está el uid del usuairo, vamos a extraerlo
         const {uid}= jwt.verify(token,process.env.SECRETOPRIVATEKEY); //Verificar jwt correcto
+
+        console.log('uid ......',uid);
         const usuario=await Usuario.findById(uid);
         
         console.log('usuario'.red,usuario)
@@ -36,7 +39,7 @@ const validarJWT= async (req,res,next)=>{
         next()
     }catch(error){
         console.log('estoy en el error'.green)
-        //console.log(error);
+        console.log(error);
         res.status(401).json({
             msg:'Token no válido'
         })
