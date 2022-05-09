@@ -9,3 +9,4 @@ const RoleSchema= Schema({
 });
 
 module.exports=model('Rol',RoleSchema);
+

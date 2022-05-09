@@ -8,9 +8,18 @@ class Server{
 
     constructor(){                              //En el constructor van las propiedades
         this.app = express();                   //servir contenido estatico
-        this.port = process.env.PORT;           //definir puerto de conexión
-        this.authPath='/api/auth';              //path para autenticación
-        this.usuariosPath='/api/usuarios';      //path para interacción base de datos usuarios
+        this.port = process.env.PORT;  
+        
+        this.paths={
+            auth: '/api/auth',
+            categorias: '/api/categorias',
+            usuarios:'/api/usuarios',
+            productos:'/api/productos'
+        }
+        
+        //definir puerto de conexión
+        //.authPath='/api/auth';              //path para autenticación
+        //this.usuariosPath='/api/usuarios';      //path para interacción base de datos usuarios
         this.conectarDB();                      //conectar a base de datos     
         this.middlewares();                     //Funciión que siempre va a ejecuarse cuando levantemos nuestro servidor
         this.routes();                           
@@ -28,8 +37,10 @@ class Server{
     }
 
     routes(){       //Defino las rutas de mi aplicación
-        this.app.use(this.authPath,require('../routes/auth'));      // En el path ... ejecuto ...
-        this.app.use(this.usuariosPath,require('../routes/user'));  // En el path ... ejecuto ...
+        this.app.use(this.paths.auth,require('../routes/auth'));      // En el path ... ejecuto ...
+        this.app.use(this.paths.usuarios,require('../routes/user'));  // En el path ... ejecuto ...
+        this.app.use(this.paths.categorias,require('../routes/categorias')); 
+        this.app.use(this.paths.productos,require('../routes/productos'));
     }
 
     listen(){       //No está en el constructor

@@ -1,8 +1,10 @@
 const {OAuth2Client} = require('google-auth-library');
-console.log('estoy en google verifity ... voy a crear un nuevo client')
-const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-
 require('colors')
+console.log('google-verify.js ... voy a crear un nuevo client'.blue)
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+console.log('ya cree cliente'.blue)
+
 
 //async function googleVerify(token='') {             //Recibo el token dado por google
 const googleVerify=async(token='') =>{ 
@@ -31,6 +33,7 @@ const googleVerify=async(token='') =>{
         correo: email
     }
   }
+  
   module.exports={
       googleVerify
   }

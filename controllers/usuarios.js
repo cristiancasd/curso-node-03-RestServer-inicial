@@ -64,6 +64,7 @@ const usuariosPost = async (req, res) =>{
     //destructuro el body solo la información que me interesa
     //const body=req.body;
 
+    console.log('voy a crar un usuario');
     const {nombre,correo,password, rol} = req.body
     const usuario=new Usuario({nombre,correo,password, rol});
     
@@ -80,8 +81,9 @@ const usuariosPost = async (req, res) =>{
     //Encriptar contraseña
     const salt = bcryptjs.genSaltSync();
     usuario.password=bcryptjs.hashSync(password, salt)
-    
+    console.log('contaseña encriptada');
     await usuario.save();
+    console.log('Usuario salvado');
     
     res.json({
         msg:'post API',
