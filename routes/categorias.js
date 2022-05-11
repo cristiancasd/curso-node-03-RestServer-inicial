@@ -11,7 +11,7 @@ const router=Router();
 //Obtener las categorías público
 router.get('/',ObtenerCategorias);
 
-//Obtener una por id categoría público
+//Obtener una por id categoría público, id Mongo, existeCategoria
 router.get('/:id',[
     check('id','No es un ID válido').isMongoId(),
     check('id').custom(existeCategoriaPorID),  
@@ -19,7 +19,7 @@ router.get('/:id',[
 ],
 ObtenerCategoria);
 
-//Crear categoría - privado- cualquier usuario con token  valido
+//Validar token, nombre obligatorio, existencia categoria.
 router.post('/',[
     validarJWT,    
     check('nombre','EL nombre es obligatorio').not().isEmpty(),
@@ -27,7 +27,7 @@ router.post('/',[
     validarCampos
 ],crearCategoria);
 
-//Actualizar - privado - cualquiera con token valido
+//Validar token, nombre obligatorio, ID mongo, existencia de ID.
 router.put('/:id',[
     validarJWT,
     check('id').custom(existeCategoriaPorID), 
@@ -37,7 +37,7 @@ router.put('/:id',[
 ],
 actualizarCategoria);
 
-//Borrar una categoría - Admin
+//Borrar una categoría - AdminRole, validar token, ID mongo, Existacateg
 router.delete('/:id',[ 
     validarJWT,                                      //Es la primera que se valida, que el token sea correcto
     esAdminRole,                                   //Solo un rol permitido
@@ -47,6 +47,7 @@ router.delete('/:id',[
     validarCampos                                    //No continua a la ruta si hay un error en los checks
 ],categoriasDelete);
 
-
 module.exports= router;
+
+
 

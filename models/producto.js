@@ -10,23 +10,19 @@ const ProductoSchema= Schema({
         type:Boolean,
         default:true,
         required:true
-    },
-    
+    },    
     precio:{
         type: Number,
         default:0
     },
-
     descripcion:{
         type:String,
         default:""
     },
-
     disponible:{
         type:String,
         default:true
-    },
-    
+    },    
     categoria:{ //Necesito saber que usuario creó la categoría
         type: Schema.Types.ObjectId,
         ref: 'Categoria',
@@ -40,10 +36,11 @@ const ProductoSchema= Schema({
     }
 });
 
-
 ProductoSchema.methods.toJSON = function() {
     const { __v, estado, ...data  } = this.toObject();
     return data;
 }
 
 module.exports=model('Producto', ProductoSchema);
+
+

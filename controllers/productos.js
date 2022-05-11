@@ -56,15 +56,16 @@ const crearProducto= async (req, res=response) => {
     console.log('estoy en crear producto'.blue)
 
     //
-    let  {estado, usuario, ...resto}=req.body
+    let  {estado, usuario, nombre, categoria, ...resto}=req.body
     
-    let nombre = resto.nombre.toUpperCase();                   // Recibo nombre de la categoría
-    let categoria = resto.categoria.toUpperCase();    
+     nombre = nombre.toUpperCase();                   // Recibo nombre de la categoría
+     categoria = categoria.toUpperCase();    
                    // Recibo nombre de la categoría
        
     console.log('Producto que quiero guardar'.green,nombre)
 
-    const categoriaDb = await Categoria.findOne({categoria})
+    console.log('voy a buscar la categoria '.green,categoria)
+    const categoriaDb = await Categoria.findOne({nombre:categoria})
 
     console.log('categoriaDb  ', categoriaDb )
  

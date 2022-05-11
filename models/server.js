@@ -3,9 +3,7 @@ const cors = require('cors');
 const dbConnection = require('../database/config');
 
 class Server{
-
     // Clase principal
-
     constructor(){                              //En el constructor van las propiedades
         this.app = express();                   //servir contenido estatico
         this.port = process.env.PORT;  
@@ -14,7 +12,8 @@ class Server{
             auth: '/api/auth',
             categorias: '/api/categorias',
             usuarios:'/api/usuarios',
-            productos:'/api/productos'
+            productos:'/api/productos',
+            buscar:'/api/buscar'
         }
         
         //definir puerto de conexión
@@ -41,6 +40,7 @@ class Server{
         this.app.use(this.paths.usuarios,require('../routes/user'));  // En el path ... ejecuto ...
         this.app.use(this.paths.categorias,require('../routes/categorias')); 
         this.app.use(this.paths.productos,require('../routes/productos'));
+        this.app.use(this.paths.buscar,require('../routes/buscar'));
     }
 
     listen(){       //No está en el constructor

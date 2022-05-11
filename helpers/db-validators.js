@@ -5,18 +5,12 @@ const Producto=require('../models/producto');
 
 require('colors')
 
-
-
-
-
-
 const esRoleValido=async(rol='')=>{  
     const existeRol = await Role.findOne({rol});
     if(!existeRol){
         throw new Error(' El rol no está registrado en la BD')
     }
 }
-
 const emailExiste=async(correo='')=>{
     //Comprobar si el correo existe
   const existeEmail=await Usuario.findOne({correo});
@@ -26,14 +20,12 @@ const emailExiste=async(correo='')=>{
     throw new Error('Ya se está usando el correo')
   }
 }
-
 const existeUsuarioId=async(id)=>{
   const existeUsuario = await Usuario.findById(id);
   if (!existeUsuario){
     throw new Error('El id no existe')
   }
 }
-
 const categoriaOK=async(categoria)=>{
 
   let categoriaDb = await Categoria.find({categoria});
@@ -51,7 +43,6 @@ const categoriaOK=async(categoria)=>{
     throw new Error(`Helper... La categoría ${cate}, No existe`) 
   }
 }
-
 const existeCategoria=async(categoria)=>{
 
   let categoriaDb = await Categoria.find({categoria});
@@ -83,20 +74,35 @@ const existeCategoria=async(categoria)=>{
 
 
 }
-
 const existeCategoriaPorID=async(id)=>{
   const existeCate = await Categoria.findById(id);
   if (!existeCate){
     throw new Error('El id no existe')
   }
 }
-
 const existeProducto=async(producto)=>{
-  console.log('estoy en existeProducto'.yellow)
-  let productoDb = await Producto.find({producto});
-  let n=0;
-  let cate='0';
 
+  console.log('estoy en existeProducto'.yellow)
+  
+  let product=producto.toUpperCase();
+
+  const query = { nombre: product };
+  console.log('Buscar si ya exite el producto'.yellow, query)
+
+  let productoDb = await Producto.findOne(query);
+  console.log('productoDb es'.red, productoDb);
+
+  if(productoDb){
+    console.log('condicional')
+    console.log(`Helper... El producto ${producto}, ya existe`.yellow)
+    throw new Error(`Helper... El producto ${producto}, ya existe`)  
+  }
+
+  console.log(`Helper... El producto ${producto}, No existe vamos a crearlo`.yellow)
+
+  /*
+    let n=0;
+  let cate='0';
   while (n < (productoDb.length) && cate=='0') {
     if(productoDb[n].nombre==producto.toUpperCase()){
       cate=producto.toUpperCase();
@@ -107,7 +113,7 @@ const existeProducto=async(producto)=>{
   if(cate!='0'){
     throw new Error(`Helper... El producto ${cate}, ya existe`) 
   }
-
+*/
 
   
   /*
@@ -122,7 +128,6 @@ const existeProducto=async(producto)=>{
 
 
 }
-
 const existeProductoPorID=async(id)=>{
   const existeProd = await Producto.findById(id);
   if (!existeProd){
