@@ -1,7 +1,7 @@
 require('express-validator')
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { cargarArchivo, actualizarImagen, mostrarImagen } = require('../controllers/uploads');
+const { cargarArchivo, actualizarImagen, mostrarImagen, actualizarImagenCloudinary } = require('../controllers/uploads');
 const { validarCampos } =         require('../middlewares');
 const { validarArchivoSubir } =   require('../middlewares/validar-archivo');
 const { coleccionesPermitidas } = require('../helpers/db-validators');
@@ -18,7 +18,8 @@ router.put('/:coleccion/:id', [                              //Editar, recibo la
         c=>coleccionesPermitidas(c,['usuarios','productos'])),//Valido si las colecciones son permitidas
     validarArchivoSubir,                                      //Valido archivo en el body
     validarCampos
-], actualizarImagen);                                         //Guardo la imagén y borro la anterior
+    ],actualizarImagenCloudinary)
+//], actualizarImagen);                                         //Guardo la imagén y borro la anterior
 
 router.get('/:coleccion/:id',[                                //Obtener la imagén
     check('id','El id debe de ser de mongo').isMongoId(),      
