@@ -1,3 +1,6 @@
 /node_modules
 .env
 /rest-server-cafe-node
+
+uploads/productos/**.*
+uploads/usuarios/**.*

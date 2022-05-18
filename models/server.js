@@ -1,6 +1,7 @@
 const express = require('express')
 const cors = require('cors');
 const dbConnection = require('../database/config');
+const fileUpload=require('express-fileUpload')
 
 class Server{
     // Clase principal
@@ -13,7 +14,8 @@ class Server{
             categorias: '/api/categorias',
             usuarios:'/api/usuarios',
             productos:'/api/productos',
-            buscar:'/api/buscar'
+            buscar:'/api/buscar',
+            uploads:'/api/uploads'
         }
         
         //definir puerto de conexión
@@ -33,6 +35,13 @@ class Server{
         this.app.use(cors());          //API solo ciertas páginas web pueden acceder a ellas, proteges tu servidor       
         this.app.use(express.json());  //Lectura y parseo del body (cualquier información en POST, PUT, DELATE, ls vs s intentar)        
         this.app.use(express.static('public'))  //Directorio publico  (busca el index)
+        
+        //Fileupload - carga de archivos
+        this.app.use(fileUpload({
+            useTempFiles : true,
+            tempFileDir : '/tmp/',
+            createParentPath: true //Si la carpeta no existe la creamos
+        }));
     }
 
     routes(){       //Defino las rutas de mi aplicación
@@ -41,6 +50,7 @@ class Server{
         this.app.use(this.paths.categorias,require('../routes/categorias')); 
         this.app.use(this.paths.productos,require('../routes/productos'));
         this.app.use(this.paths.buscar,require('../routes/buscar'));
+        this.app.use(this.paths.uploads,require('../routes/uploads'));
     }
 
     listen(){       //No está en el constructor

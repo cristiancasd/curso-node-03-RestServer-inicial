@@ -22,6 +22,9 @@ const ProductoSchema= Schema({
     disponible:{
         type:String,
         default:true
+    },
+    img:{
+        type:String
     },    
     categoria:{ //Necesito saber que usuario creó la categoría
         type: Schema.Types.ObjectId,
