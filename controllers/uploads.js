@@ -153,7 +153,7 @@ const actualizarImagenCloudinary= async (req,res=response)=>{
 
   //Si existe modelo, vamos a Limpiar imagenes previas
   if(modelo.img){ //hay una imagen en mi base de datos 
-    console.log('hay imagen ...',img)    
+    console.log('hay imagen ...',modelo.img)    
     const nombreArr=modelo.img.split('/');
     const nombre=nombreArr[nombreArr.length-1];
     const [public_id] = nombre.split('.');

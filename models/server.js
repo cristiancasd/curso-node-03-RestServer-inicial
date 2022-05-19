@@ -1,7 +1,7 @@
 const express = require('express')
 const cors = require('cors');
 const dbConnection = require('../database/config');
-const fileUpload=require('express-fileUpload')
+const fileUpload=require('express-fileupload')
 
 class Server{
     // Clase principal
